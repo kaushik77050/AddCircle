@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "650472145757",
+    "firebase_url": "https://maps26jan2020.firebaseio.com",
+    "project_id": "maps26jan2020",
+    "storage_bucket": "maps26jan2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650472145757:android:a285da879f5f0bd55b1eb4",
+        "android_client_info": {
+          "package_name": "com.kaushik.googlemaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650472145757-qj5c2ked69h907ajmk303qmd89tk738t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kaushik.googlemaps",
+            "certificate_hash": "0e247615c8767f67aa6d0d2918460d94531eeb83"
+          }
+        },
+        {
+          "client_id": "650472145757-n9i9j01eo6m20s8llgkmstj8crf5k29u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC-df6SxwI9XdIevZATHgz_VY0PGPav6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650472145757-n9i9j01eo6m20s8llgkmstj8crf5k29u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
