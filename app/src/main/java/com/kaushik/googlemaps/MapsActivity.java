@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.internal.Asserts;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
     DatabaseReference myRef;
     MapStateManager mapStateManager;
     ArrayList<LatLng> list = new ArrayList<>();
-
+    Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,57 @@ import java.util.ArrayList;
         assert mapFragment != null;
 
         mapFragment.getMapAsync(this);
+        btn = findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAllDustbins();
+            }
+        });
+    }
 
+    void showAllDustbins()
+    {
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    //Toast.makeText(MapsActivity.this, "Location:"+snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                    Locations locations1 = snapshot.getValue(Locations.class);
+                    String id1 = locations1.getId();
+                    Double lat = locations1.getLatitude();
+                    Double lon = locations1.getLongitude();
+                    Toast.makeText(MapsActivity.this,  "latitude:"+lat+" longitude:"+lon+"id:"+id1, Toast.LENGTH_SHORT).show();
+                    LatLng ltln = new LatLng(lat,lon);
+                    //LatLng ltln = locations1.getLl();
+                    //Toast.makeText(MapsActivity.this, "Location"+ltln.longitude, Toast.LENGTH_SHORT).show();
+                    //Creating Marker
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    //Set Marker Position
+                    markerOptions.position(ltln);
+                    //Set Latitude And Longitude On Marker
+                    markerOptions.title(ltln.latitude+ " : " + ltln.longitude);
+                    //Zoom the Marker
+                    //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1,100));
+                    //Add marker On Map
+                    mMap.addMarker(markerOptions);
+                    Circle circle = mMap.addCircle(new CircleOptions()
+                            .center(ltln)
+                            .radius(10)
+                            .strokeColor(Color.RED)
+                            .fillColor(Color.argb(50,0,0,255)));
+                }
+
+//                        mMap.addMarker(new MarkerOptions().position(nitte).title("Marker in Nitte").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+//                        //  LatLng latLng1 = (LatLng) dataSnapshot.child("ll").getValue();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
      @Override
@@ -99,46 +151,7 @@ import java.util.ArrayList;
                 myRef.child(id).setValue(locations);
 
                 //Retrive previously saved state of map
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            //Toast.makeText(MapsActivity.this, "Location:"+snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
-                            Locations locations1 = snapshot.getValue(Locations.class);
-                            String id1 = locations1.getId();
-                            Double lat = locations1.getLatitude();
-                            Double lon = locations1.getLongitude();
-                            Toast.makeText(MapsActivity.this,  "latitude:"+lat+" longitude:"+lon+"id:"+id1, Toast.LENGTH_SHORT).show();
-                            LatLng ltln = new LatLng(lat,lon);
-                            //LatLng ltln = locations1.getLl();
-                            //Toast.makeText(MapsActivity.this, "Location"+ltln.longitude, Toast.LENGTH_SHORT).show();
-                            //Creating Marker
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            //Set Marker Position
-                            markerOptions.position(ltln);
-                            //Set Latitude And Longitude On Marker
-                            markerOptions.title(ltln.latitude+ " : " + ltln.longitude);
-                            //Zoom the Marker
-                            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1,100));
-                            //Add marker On Map
-                            mMap.addMarker(markerOptions);
-                            Circle circle = mMap.addCircle(new CircleOptions()
-                                    .center(ltln)
-                                    .radius(10)
-                                    .strokeColor(Color.RED)
-                                    .fillColor(Color.argb(50,0,0,255)));
-                        }
 
-//                        mMap.addMarker(new MarkerOptions().position(nitte).title("Marker in Nitte").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-//                        //  LatLng latLng1 = (LatLng) dataSnapshot.child("ll").getValue();
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 //
 //                Toast.makeText(MapsActivity.this, "Location Added", Toast.LENGTH_SHORT).show();
 //                //mapStateManager.saveMapState(mMap,latLng);
@@ -146,4 +159,5 @@ import java.util.ArrayList;
         });
 
         }
-    }
+
+ }
