@@ -93,7 +93,7 @@ import java.util.ArrayList;
 
                 String id = myRef.push().getKey();
 
-                final Locations locations = new Locations(id,latLng.latitude,latLng.longitude);
+                Locations locations = new Locations(id,latLng.latitude,latLng.longitude);
 
                 //myRef.child(id).setValue(locations.getLl());
                 myRef.child(id).setValue(locations);
@@ -105,37 +105,33 @@ import java.util.ArrayList;
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             //Toast.makeText(MapsActivity.this, "Location:"+snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
                             Locations locations1 = snapshot.getValue(Locations.class);
-                            //String id1 = locations1.getId();
+                            String id1 = locations1.getId();
                             Double lat = locations1.getLatitude();
                             Double lon = locations1.getLongitude();
-                            Toast.makeText(MapsActivity.this,  "latitude:"+lat+" longitude:"+lon, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MapsActivity.this,  "latitude:"+lat+" longitude:"+lon+"id:"+id1, Toast.LENGTH_SHORT).show();
+                            LatLng ltln = new LatLng(lat,lon);
                             //LatLng ltln = locations1.getLl();
                             //Toast.makeText(MapsActivity.this, "Location"+ltln.longitude, Toast.LENGTH_SHORT).show();
+                            //Creating Marker
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            //Set Marker Position
+                            markerOptions.position(ltln);
+                            //Set Latitude And Longitude On Marker
+                            markerOptions.title(ltln.latitude+ " : " + ltln.longitude);
+                            //Zoom the Marker
+                            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1,100));
+                            //Add marker On Map
+                            mMap.addMarker(markerOptions);
+                            Circle circle = mMap.addCircle(new CircleOptions()
+                                    .center(ltln)
+                                    .radius(10)
+                                    .strokeColor(Color.RED)
+                                    .fillColor(Color.argb(50,0,0,255)));
                         }
-//                        Double lt = dataSnapshot.child("latitude").getValue(Double.class);
-//                        String ln = dataSnapshot.child("longitude").getValue(String.class);
-                        //Log.i("latitude",ln);
-                        //System.out.println(lt);
-                        //String id1 = dataSnapshot.getValue().toString();
-                        //Toast.makeText(MapsActivity.this, "Latitude:"+lt, Toast.LENGTH_SHORT).show();
-//                        LatLng nitte = new LatLng(lt,ln);
+
 //                        mMap.addMarker(new MarkerOptions().position(nitte).title("Marker in Nitte").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 //                        //  LatLng latLng1 = (LatLng) dataSnapshot.child("ll").getValue();
-//                        //Creating Marker
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        //Set Marker Position
-//                        markerOptions.position(latLng1);
-//                        //Set Latitude And Longitude On Marker
-//                        markerOptions.title(latLng1.latitude+ " : " + latLng1.longitude);
-//                        //Zoom the Marker
-//                        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1,100));
-//                        //Add marker On Map
-//                        mMap.addMarker(markerOptions);
-//                        Circle circle = mMap.addCircle(new CircleOptions()
-//                                .center(latLng1)
-//                                .radius(10)
-//                                .strokeColor(Color.RED)
-//                                .fillColor(Color.argb(50,0,0,255)));
+
                     }
 
                     @Override
